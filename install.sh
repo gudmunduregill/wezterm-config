@@ -45,7 +45,7 @@ ensure_sourced() {
         return
     fi
 
-    printf '\n# Dotfiles: pane tagging\n%s\n' "$src_line" >> "$tgt"
+    printf '\n%s\n' "$src_line" >> "$tgt"
     ok "Added source line to $tgt"
 }
 
@@ -82,8 +82,9 @@ case "$ENV" in
         # Tmux config
         make_link "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
-        # Bash pane-tag function
+        # Bash extensions
         ensure_sourced "$DOTFILES_DIR/bash/pane-tag.bash" "$HOME/.bashrc"
+        ensure_sourced "$DOTFILES_DIR/bash/claude-pane.bash" "$HOME/.bashrc"
         ;;
 
     linux)
@@ -93,8 +94,9 @@ case "$ENV" in
         # Tmux config
         make_link "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
-        # Bash pane-tag function
+        # Bash extensions
         ensure_sourced "$DOTFILES_DIR/bash/pane-tag.bash" "$HOME/.bashrc"
+        ensure_sourced "$DOTFILES_DIR/bash/claude-pane.bash" "$HOME/.bashrc"
         ;;
 
     windows)
