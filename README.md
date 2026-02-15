@@ -1,28 +1,33 @@
-# wezterm-config
+# dotfiles
 
-My [WezTerm](https://wezfurlong.org/wezterm/) configuration.
+Personal configuration files for WezTerm, tmux, and bash.
 
-## Features
+## Contents
 
-- **Theme:** Catppuccin Mocha
-- **Font:** Inconsolata Nerd Font (12pt)
-- **Tab bar:** Fancy, bottom-positioned, themed to match
-- **Window:** Borderless (`RESIZE` only), slight transparency (0.95), Alt+drag to move
-- **Cursor:** Blinking bar
-- **Default domain:** WSL (Ubuntu)
-
-## Keybindings
-
-| Key | Action |
-|-----|--------|
-| `Ctrl+Shift+Q` | Quit |
-| `Ctrl+Shift+W` | Close tab (no confirm) |
-| `Alt+Drag` | Move window |
+| Path | Description |
+|------|-------------|
+| `wezterm/.wezterm.lua` | WezTerm terminal config (Catppuccin Mocha, Inconsolata NF) |
+| `tmux/.tmux.conf` | tmux config (vi mode, vim-tmux-navigator, pane labels) |
+| `bash/pane-tag.bash` | `tp` function -- tag tmux panes with name and color |
+| `install.sh` | Cross-platform symlink installer |
 
 ## Installation
 
-Copy `.wezterm.lua` to your home directory:
+```sh
+git clone https://github.com/gudmunduregill/dotfiles.git
+cd dotfiles
+./install.sh
+```
+
+The installer detects your environment (WSL, native Linux, or Windows/MSYS) and creates the appropriate symlinks. Existing files are backed up with a `.bak.*` suffix before being replaced.
+
+## Pane tagging
+
+The `tp` function lets you label and color-code tmux panes:
 
 ```sh
-cp .wezterm.lua ~/
+tp "api-server" blue
+tp "logs" red
 ```
+
+Available colors: red, green, blue, yellow, magenta, cyan, orange, pink -- or pass any raw tmux colour.
