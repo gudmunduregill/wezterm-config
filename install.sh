@@ -34,6 +34,35 @@ make_link() {
     ok "$tgt -> $src"
 }
 
+# Create a Windows hard link for files that Windows apps need to read.
+# WSL symlinks use /mnt/c paths that Windows cannot resolve, so we use
+# cmd.exe mklink /H which creates a native NTFS hard link.
+# Usage: make_win_hardlink <source> <target>  (both as /mnt/c/... paths)
+make_win_hardlink() {
+    local src="$1" tgt="$2"
+
+    # Convert /mnt/c/... to C:\...
+    local win_src win_tgt
+    win_src="$(echo "$src" | sed 's|^/mnt/\([a-z]\)/|\U\1:\\|; s|/|\\|g')"
+    win_tgt="$(echo "$tgt" | sed 's|^/mnt/\([a-z]\)/|\U\1:\\|; s|/|\\|g')"
+
+    # Already a working hard link (same inode)
+    if [ -f "$tgt" ] && [ "$(stat -c %i "$src")" = "$(stat -c %i "$tgt")" ]; then
+        ok "$tgt hard-linked to $src (already set)"
+        return
+    fi
+
+    # Back up existing file/symlink
+    if [ -e "$tgt" ] || [ -L "$tgt" ]; then
+        local backup="${tgt}.bak.$(date +%Y%m%d%H%M%S)"
+        warn "Backing up $tgt -> $backup"
+        mv "$tgt" "$backup"
+    fi
+
+    cmd.exe /c "mklink /H \"$win_tgt\" \"$win_src\"" >/dev/null 2>&1
+    ok "$tgt hard-linked to $src"
+}
+
 # Append a source line to a file if not already present.
 # Usage: ensure_sourced <file_to_source> <target_file>
 ensure_sourced() {
@@ -74,7 +103,7 @@ case "$ENV" in
         WIN_USER="$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')"
         WIN_HOME="/mnt/c/Users/$WIN_USER"
         if [ -d "$WIN_HOME" ]; then
-            make_link "$DOTFILES_DIR/wezterm/.wezterm.lua" "$WIN_HOME/.wezterm.lua"
+            make_win_hardlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$WIN_HOME/.wezterm.lua"
         else
             warn "Windows home not found at $WIN_HOME — skipping WezTerm"
         fi
