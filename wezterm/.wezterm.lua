@@ -2,13 +2,13 @@ local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 -- Default to WSL
-config.default_domain = 'WSL:Ubuntu'
+config.default_domain = 'WSL:Ubuntu-24.04'
 
 -- Catppuccin Mocha theme
 config.color_scheme = 'Catppuccin Mocha'
 
 -- Font
-config.font = wezterm.font('Inconsolata Nerd Font', { weight = 'Medium' })
+config.font = wezterm.font('Inconsolata Nerd Font', { weight = 'Regular' })
 config.font_size = 12.0
 
 -- Window appearance
