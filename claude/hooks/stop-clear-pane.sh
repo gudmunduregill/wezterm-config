@@ -1,17 +1,17 @@
 #!/bin/bash
-# Clear the saved prompt when Claude finishes responding.
+# Clear the saved prompt and reset pane title when Claude finishes.
 # Called by Stop hook.
 
 INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | grep -oP '"session_id"\s*:\s*"\K[^"]*')
-
-STATE_DIR="$HOME/.claude/state"
-rm -f "$STATE_DIR/prompt-$SESSION_ID"
-
-# Reset pane title to just project name
-[ -z "$TMUX" ] && exit 0
-
 CWD=$(echo "$INPUT" | grep -oP '"cwd"\s*:\s*"\K[^"]*')
+
+# Remove prompt file
+rm -f "$HOME/.claude/state/prompt-$SESSION_ID"
+
+# Reset pane title
+[ -z "$TMUX" ] || [ -z "$TMUX_PANE" ] && exit 0
+
 PROJECT=""
 if [ -n "$CWD" ] && [ "$CWD" != "$HOME" ]; then
     CHECK="$CWD"
