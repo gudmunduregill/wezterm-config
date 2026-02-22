@@ -37,5 +37,5 @@ fi
 
 # Update tmux pane title
 if [ -n "$TMUX" ]; then
-    tmux select-pane -T "$TITLE"
+    tmux select-pane -t "$TMUX_PANE" -T "$TITLE"
 fi

@@ -25,4 +25,4 @@ if [ -n "$CWD" ] && [ "$CWD" != "$HOME" ]; then
 fi
 PROJECT="${PROJECT:-claude}"
 
-tmux select-pane -T "$PROJECT"
+tmux select-pane -t "$TMUX_PANE" -T "$PROJECT"
