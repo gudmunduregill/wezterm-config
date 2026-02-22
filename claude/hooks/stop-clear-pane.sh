@@ -1,13 +1,17 @@
 #!/bin/bash
-# Reset tmux pane title to just the project name when Claude finishes
-# Called by Stop hook
-
-[ -z "$TMUX" ] && exit 0
+# Clear the saved prompt when Claude finishes responding.
+# Called by Stop hook.
 
 INPUT=$(cat)
-CWD=$(echo "$INPUT" | grep -oP '"cwd"\s*:\s*"\K[^"]*')
+SESSION_ID=$(echo "$INPUT" | grep -oP '"session_id"\s*:\s*"\K[^"]*')
 
-# Determine project name (same logic as claude-pane.bash)
+STATE_DIR="$HOME/.claude/state"
+rm -f "$STATE_DIR/prompt-$SESSION_ID"
+
+# Reset pane title to just project name
+[ -z "$TMUX" ] && exit 0
+
+CWD=$(echo "$INPUT" | grep -oP '"cwd"\s*:\s*"\K[^"]*')
 PROJECT=""
 if [ -n "$CWD" ] && [ "$CWD" != "$HOME" ]; then
     CHECK="$CWD"

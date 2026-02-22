@@ -119,6 +119,7 @@ case "$ENV" in
         mkdir -p "$HOME/.claude/hooks"
         make_link "$DOTFILES_DIR/claude/hooks/prompt-to-pane.sh" "$HOME/.claude/hooks/prompt-to-pane.sh"
         make_link "$DOTFILES_DIR/claude/hooks/stop-clear-pane.sh" "$HOME/.claude/hooks/stop-clear-pane.sh"
+        make_link "$DOTFILES_DIR/claude/hooks/statusline.sh" "$HOME/.claude/hooks/statusline.sh"
         ;;
 
     linux)
@@ -136,6 +137,7 @@ case "$ENV" in
         mkdir -p "$HOME/.claude/hooks"
         make_link "$DOTFILES_DIR/claude/hooks/prompt-to-pane.sh" "$HOME/.claude/hooks/prompt-to-pane.sh"
         make_link "$DOTFILES_DIR/claude/hooks/stop-clear-pane.sh" "$HOME/.claude/hooks/stop-clear-pane.sh"
+        make_link "$DOTFILES_DIR/claude/hooks/statusline.sh" "$HOME/.claude/hooks/statusline.sh"
         ;;
 
     windows)
